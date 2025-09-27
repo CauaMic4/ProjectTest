@@ -13,12 +13,12 @@ namespace ProjectTest.Repository.Implementations
 
         public List<Person> FindAll()
         {
-            return _context.Persons.ToList();
+            return _context.Persons.Where(p=>p.Enable == true).ToList();
         }
 
         public Person FindById(long id)
         {
-            return _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
+            return _context.Persons.Where(p => p.Enable == true).SingleOrDefault(p => p.Id.Equals(id)) ;
         }
 
         public Person Create(Person person)
@@ -40,6 +40,7 @@ namespace ProjectTest.Repository.Implementations
         public Person Update(Person person)
         {
             if (!Exists(person.Id)) return null;
+
             var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(person.Id));
             if (result != null)
             {
@@ -59,11 +60,13 @@ namespace ProjectTest.Repository.Implementations
         public void Delete(long id)
         {
             var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
+
             if (result != null)
             {
                 try
                 {
-                    _context.Persons.Remove(result);
+                    result.Enable = false;
+
                     _context.SaveChanges();
                 }
                 catch (Exception e)
