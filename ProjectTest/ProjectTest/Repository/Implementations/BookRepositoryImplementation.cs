@@ -3,7 +3,7 @@ using ProjectTest.Model.Context;
 
 namespace ProjectTest.Repository.Implementations
 {
-    public class BookRepositoryImplementation : IBookRepository
+    public class BookRepositoryImplementation : IRepository<Book>
     {
         private SqlContext _context;
         public BookRepositoryImplementation(SqlContext context)
