@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using ProjectTest.Model.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectTest.Model
 {
     [Table("person")]
-    public class Person
+    public class Person : BaseEntity
     {
         public long Id { get; set; }
         public string Address { get; set; } 
