@@ -30,6 +30,8 @@ namespace ProjectTest.Repository.Generic
         {
             try
             {
+                item.Ativo = true;
+
                 dataset.Add(item);
                 _context.SaveChanges();
 
@@ -70,7 +72,9 @@ namespace ProjectTest.Repository.Generic
             if (result != null)
             {
                 try
-                {
+                {   
+                    result.Ativo = false;
+
                     dataset.Remove(result);
                     _context.SaveChanges();
                 }

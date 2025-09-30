@@ -7,6 +7,7 @@ using ProjectTest.Model.Context;
 using Serilog;
 using EvolveDb;
 using Microsoft.Data.SqlClient;
+using ProjectTest.Repository.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,8 @@ builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
 
 builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
-builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 
 var app = builder.Build();
