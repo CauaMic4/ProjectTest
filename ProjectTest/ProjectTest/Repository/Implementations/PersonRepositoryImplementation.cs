@@ -13,19 +13,19 @@ namespace ProjectTest.Repository.Implementations
 
         public List<Person> FindAll()
         {
-            return _context.Persons.Where(p=>p.Enable == true).ToList();
+            return _context.Persons.Where(p=>p.Ativo == true).ToList();
         }
 
         public Person FindById(long id)
         {
-            return _context.Persons.Where(p => p.Enable == true).SingleOrDefault(p => p.Id.Equals(id)) ;
+            return _context.Persons.Where(p => p.Ativo == true).SingleOrDefault(p => p.Id.Equals(id)) ;
         }
 
         public Person Create(Person person)
         {
             try
             {
-                person.Enable = true;
+                person.Ativo = true;
 
                 _context.Add(person);
                 _context.SaveChanges();
@@ -65,7 +65,7 @@ namespace ProjectTest.Repository.Implementations
             {
                 try
                 {
-                    result.Enable = false;
+                    result.Ativo = false;
 
                     _context.SaveChanges();
                 }
