@@ -31,8 +31,10 @@ builder.Services.AddApiVersioning();
 
 //Dependecy Injection
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
 
+builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
 
 
 var app = builder.Build();

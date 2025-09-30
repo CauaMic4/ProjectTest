@@ -5,6 +5,6 @@ BEGIN
         Author NVARCHAR(80) NOT NULL,
         Launch_date DATE NOT NULL,
         Price DECIMAL(10,2) NOT NULL,
-        Ativo Nvarchar(80)
+        Ativo BIT NOT NULL DEFAULT(1)
     );
 END;
