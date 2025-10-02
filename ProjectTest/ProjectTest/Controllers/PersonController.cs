@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTest.Business;
-using ProjectTest.Model;
+using ProjectTest.Data.VO;
 
 namespace ProjectTest.Controllers
 {
@@ -43,7 +43,7 @@ namespace ProjectTest.Controllers
 
         #region POST
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonVO person)
         {
 
             if (person == null)
@@ -55,7 +55,7 @@ namespace ProjectTest.Controllers
 
         #region PUT
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonVO person)
         {
 
             if (person == null)

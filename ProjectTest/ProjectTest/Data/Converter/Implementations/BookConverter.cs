@@ -4,40 +4,39 @@ using ProjectTest.Model;
 
 namespace ProjectTest.Data.Converter.Implementations
 {
-    public class PersonConverter : IParser<PersonVO, Person>, IParser<Person, PersonVO>
+    public class BookConverter : IParser<BookVO, Book>, IParser<Book, BookVO>
     {
-
-        public Person Parse(PersonVO origin)
+        public Book Parse(BookVO origin)
         {
             if (origin == null)
                 return null;
 
-            return new Person
+            return new Book
             {
                 Id = origin.Id,
-                FirstName = origin.FirstName,
-                LastName = origin.LastName,
-                Address = origin.Address,
-                Gender = origin.Gender
+                Author = origin.Author,
+                Title = origin.Title,
+                Launch_date = origin.Launch_date,
+                Price = origin.Price
             };
         }
 
-        public PersonVO Parse(Person origin)
+        public BookVO Parse(Book origin)
         {
             if (origin == null)
                 return null;
 
-            return new PersonVO
+            return new BookVO
             {
                 Id = origin.Id,
-                FirstName = origin.FirstName,
-                LastName = origin.LastName,
-                Address = origin.Address,
-                Gender = origin.Gender
+                Author = origin.Author,
+                Title = origin.Title,
+                Launch_date = origin.Launch_date,
+                Price = origin.Price
             };
         }
-        
-        public List<PersonVO> Parse(List<Person> origin)
+
+        public List<Book> Parse(List<BookVO> origin)
         {
             if (origin == null)
                 return null;
@@ -45,8 +44,7 @@ namespace ProjectTest.Data.Converter.Implementations
             return origin.Select(item => Parse(item)).ToList();
         }
 
-
-        public List<Person> Parse(List<PersonVO> origin)
+        public List<BookVO> Parse(List<Book> origin)
         {
             if (origin == null)
                 return null;
