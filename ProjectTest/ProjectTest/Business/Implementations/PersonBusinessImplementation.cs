@@ -50,7 +50,11 @@ namespace ProjectTest.Business.Implementations
 
         public void Delete(long id)
         {
-            _repository.Delete(id);
+            var user = _converter.Parse(_repository.FindById(id));
+
+            user.Ativo = false;
+
+           Update(user);
         }
     }
 }

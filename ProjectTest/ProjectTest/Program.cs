@@ -1,13 +1,15 @@
-using ProjectTest.Business;
-using ProjectTest.Business.Implementations;
-using ProjectTest.Repository;
-using ProjectTest.Repository.Implementations;
-using Microsoft.EntityFrameworkCore;
-using ProjectTest.Model.Context;
-using Serilog;
 using EvolveDb;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
+using ProjectTest.Business;
+using ProjectTest.Business.Implementations;
+using ProjectTest.Model.Context;
+using ProjectTest.Repository;
 using ProjectTest.Repository.Generic;
+using ProjectTest.Repository.Implementations;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,15 @@ if (builder.Environment.IsDevelopment())
 {
     MigrateDatabase(connection);
 }
+
+builder.Services.AddMvc(options => {
+    options.RespectBrowserAcceptHeader = true;
+
+
+    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+    options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+})
+.AddXmlSerializerFormatters();
 
 //Version Api
 builder.Services.AddApiVersioning();

@@ -18,12 +18,12 @@ namespace ProjectTest.Repository.Generic
         
         public List<T> FindAll()
         {
-            return dataset.ToList();
+            return dataset.Where(x=>x.Ativo == true).ToList();
         }
 
         public T FindById(long id)
         {
-            return dataset.SingleOrDefault(p => p.Id.Equals(id));
+            return dataset.SingleOrDefault(p => p.Id.Equals(id) && p.Ativo == true);
         }
 
         public T Create(T item)
@@ -75,7 +75,7 @@ namespace ProjectTest.Repository.Generic
                 {   
                     result.Ativo = false;
 
-                    dataset.Remove(result);
+                    //dataset.Remove(result);
                     _context.SaveChanges();
                 }
                 catch (Exception e)

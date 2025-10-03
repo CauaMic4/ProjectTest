@@ -18,7 +18,8 @@ namespace ProjectTest.Data.Converter.Implementations
                 FirstName = origin.FirstName,
                 LastName = origin.LastName,
                 Address = origin.Address,
-                Gender = origin.Gender
+                Gender = origin.Gender,
+                Ativo = origin.Ativo
             };
         }
 
@@ -33,7 +34,8 @@ namespace ProjectTest.Data.Converter.Implementations
                 FirstName = origin.FirstName,
                 LastName = origin.LastName,
                 Address = origin.Address,
-                Gender = origin.Gender
+                Gender = origin.Gender,
+                Ativo = origin.Ativo
             };
         }
         
@@ -42,7 +44,7 @@ namespace ProjectTest.Data.Converter.Implementations
             if (origin == null)
                 return null;
 
-            return origin.Select(item => Parse(item)).ToList();
+            return origin.Select(item => Parse(item)).Where(x=>x.Ativo == true).ToList();
         }
 
 
@@ -51,7 +53,7 @@ namespace ProjectTest.Data.Converter.Implementations
             if (origin == null)
                 return null;
 
-            return origin.Select(item => Parse(item)).ToList();
+            return origin.Select(item => Parse(item)).Where(x => x.Ativo == true).ToList();
         }
     }
 }

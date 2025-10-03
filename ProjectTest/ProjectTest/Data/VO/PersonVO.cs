@@ -12,11 +12,12 @@ namespace ProjectTest.Data.VO
 
         [JsonPropertyName("last_name")]
         public string LastName { get; set; }
-
-        [JsonIgnore]
         public string Address { get; set; }
 
         [JsonPropertyName("sex")]
         public string Gender { get; set; }
+
+        [JsonIgnore]
+        public bool? Ativo { get; set; }
     }
 }
