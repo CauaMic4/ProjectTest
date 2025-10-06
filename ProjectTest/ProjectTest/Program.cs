@@ -32,7 +32,6 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddMvc(options => {
     options.RespectBrowserAcceptHeader = true;
 
-
     options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
     options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
 })
