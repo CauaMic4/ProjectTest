@@ -1,14 +1,14 @@
 using EvolveDb;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using ProjectTest.Business;
 using ProjectTest.Business.Implementations;
+using ProjectTest.Hypermedia.Enricher;
+using ProjectTest.Hypermedia.FIlters;
 using ProjectTest.Model.Context;
 using ProjectTest.Repository;
 using ProjectTest.Repository.Generic;
-using ProjectTest.Repository.Implementations;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +37,13 @@ builder.Services.AddMvc(options => {
 })
 .AddXmlSerializerFormatters();
 
+
+var filterOptions = new HyperMediaFilterOptions();
+filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+
+builder.Services.AddSingleton(filterOptions);
+
 //Version Api
 builder.Services.AddApiVersioning();
 
@@ -58,6 +65,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
 
 app.Run();
 

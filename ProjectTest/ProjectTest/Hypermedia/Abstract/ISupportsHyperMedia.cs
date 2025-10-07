@@ -1,6 +1,6 @@
 ﻿namespace ProjectTest.Hypermedia.Abstract
 {
-    public interface ISupportHyperMediacs
+    public interface ISupportsHyperMedia
     {
         List<HyperMediaLink> Links { get; set; }
     }

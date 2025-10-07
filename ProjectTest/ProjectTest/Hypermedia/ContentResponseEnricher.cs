@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 
 namespace ProjectTest.Hypermedia
 {
-    public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISupportHyperMediacs
+    public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISupportsHyperMedia
     {
         public ContentResponseEnricher()
         {
@@ -23,7 +23,7 @@ namespace ProjectTest.Hypermedia
         bool IResponseEnricher.CanEnrich(ResultExecutingContext response)
         {
             if (response.Result is OkObjectResult okObjectResult)
-                CanEnrich(okObjectResult.Value.GetType());
+                return CanEnrich(okObjectResult.Value.GetType());
 
             return false;
         }

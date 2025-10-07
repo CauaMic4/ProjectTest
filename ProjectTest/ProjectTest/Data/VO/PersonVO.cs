@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using ProjectTest.Hypermedia;
+using ProjectTest.Hypermedia.Abstract;
+using System.Text.Json.Serialization;
 
 namespace ProjectTest.Data.VO
 {
-    public class PersonVO
+    public class PersonVO : ISupportsHyperMedia
     {
         [JsonPropertyName("code")]
         public long Id { get; set; }
@@ -19,5 +21,6 @@ namespace ProjectTest.Data.VO
 
         [JsonIgnore]
         public bool? Ativo { get; set; }
+        public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
     }
 }

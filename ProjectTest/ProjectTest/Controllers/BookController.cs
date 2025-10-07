@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTest.Business;
 using ProjectTest.Data.VO;
+using ProjectTest.Hypermedia.FIlters;
 
 namespace ProjectTest.Controllers
 {
@@ -24,12 +25,14 @@ namespace ProjectTest.Controllers
         #region GET
 
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_bookBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
             var person = _bookBusiness.FindById(id);
@@ -43,6 +46,7 @@ namespace ProjectTest.Controllers
 
         #region POST
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] BookVO book)
         {
 
@@ -55,6 +59,7 @@ namespace ProjectTest.Controllers
 
         #region PUT
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] BookVO book)
         {
 
