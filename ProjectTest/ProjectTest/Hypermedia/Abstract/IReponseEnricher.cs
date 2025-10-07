@@ -4,7 +4,7 @@ namespace ProjectTest.Hypermedia.Abstract
 {
     public interface IReponseEnricher
     {
-        bool CanEnrich(ResultExecutedContext context);
-        Task Enrich(ResultExecutedContext context);
+        bool CanEnrich(ResultExecutingContext context);
+        Task Enrich(ResultExecutingContext context);
     }
 }
