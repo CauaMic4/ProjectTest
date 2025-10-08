@@ -9,14 +9,39 @@ using ProjectTest.Hypermedia.FIlters;
 using ProjectTest.Model.Context;
 using ProjectTest.Repository;
 using ProjectTest.Repository.Generic;
+using Microsoft.OpenApi.Models;
 using Serilog;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var appName = "ProjectTest API";
+var appVersion = "v1";
 
 // Add services to the container.
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 builder.Services.AddControllers();
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = appName,
+        Version = appVersion,
+        Description = "API RESTful developed in course",
+        Contact = new OpenApiContact
+        {
+            Name = "Cauã Micael",
+            Url = new Uri("https://github.com/CauaMic4")
+        }
+    });
+});
+
 
 // Connect to a database
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -47,6 +72,7 @@ builder.Services.AddSingleton(filterOptions);
 //Version Api
 builder.Services.AddApiVersioning();
 
+
 //Dependecy Injection
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
@@ -55,12 +81,27 @@ builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+// Swagger
+app.UseSwagger();
+
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", 
+        $"{appName} - {appVersion}");
+});
+
+var option = new RewriteOptions();
+
+option.AddRedirect("^$", "swagger");
+
+app.UseRewriter(option);
+
 
 app.UseAuthorization();
 
