@@ -22,6 +22,15 @@ var appVersion = "v1";
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+//Cors
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+
+}));
+
 builder.Services.AddControllers();
 
 // Swagger
@@ -87,6 +96,9 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+// Cors
+app.UseCors();
+
 // Swagger
 app.UseSwagger();
 
@@ -101,7 +113,6 @@ var option = new RewriteOptions();
 option.AddRedirect("^$", "swagger");
 
 app.UseRewriter(option);
-
 
 app.UseAuthorization();
 
