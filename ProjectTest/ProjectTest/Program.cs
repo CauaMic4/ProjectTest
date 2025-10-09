@@ -12,6 +12,14 @@ using ProjectTest.Repository.Generic;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Microsoft.AspNetCore.Rewrite;
+using ProjectTest.Services;
+using ProjectTest.Services.Implementations;
+using ProjectTest.Configurations;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +29,42 @@ var appVersion = "v1";
 // Add services to the container.
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+//jwt 
+var tokenConfiguration = new TokenConfiguration();
+
+new ConfigureFromConfigurationOptions<TokenConfiguration>(
+    builder.Configuration.GetSection("TokenConfiguration"))
+        .Configure(tokenConfiguration);
+
+builder.Services.AddSingleton(tokenConfiguration);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = tokenConfiguration.Issuer,
+        ValidAudience = tokenConfiguration.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
+    };
+});
+
+builder.Services.AddAuthorization(auth =>
+{
+    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser().Build()
+    );
+});
+
 
 //Cors
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
@@ -63,7 +107,8 @@ if (builder.Environment.IsDevelopment())
     MigrateDatabase(connection);
 }
 
-builder.Services.AddMvc(options => {
+builder.Services.AddMvc(options =>
+{
     options.RespectBrowserAcceptHeader = true;
 
     options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
@@ -85,10 +130,15 @@ builder.Services.AddApiVersioning();
 //Dependecy Injection
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+builder.Services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+
+builder.Services.AddTransient<ITokenService, TokenService>();
 
 //builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 var app = builder.Build();
 
@@ -104,7 +154,7 @@ app.UseSwagger();
 
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", 
+    c.SwaggerEndpoint("/swagger/v1/swagger.json",
         $"{appName} - {appVersion}");
 });
 

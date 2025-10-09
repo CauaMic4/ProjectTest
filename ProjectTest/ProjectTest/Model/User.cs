@@ -7,7 +7,7 @@ namespace ProjectTest.Model
     public class User
     {
         [Key]
-        public long IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
 
         [Column("User_Name")]
         public string UserName { get; set; }
@@ -19,10 +19,10 @@ namespace ProjectTest.Model
         public string Password { get; set; }
 
         [Column("Refresh_Token")]
-        public string RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
 
         [Column("Refresh_Token_expiry_time")]
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
     }
 }
