@@ -8,7 +8,7 @@ namespace ProjectTest.Repository.Generic
 {
     public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private SqlContext _context;
+        protected SqlContext _context;
         private DbSet<T> dataset;
         public GenericRepository(SqlContext context)
         {

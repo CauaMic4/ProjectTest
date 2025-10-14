@@ -65,7 +65,6 @@ builder.Services.AddAuthorization(auth =>
     );
 });
 
-
 //Cors
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
 {
@@ -94,7 +93,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 
 // Connect to a database
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -138,6 +136,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 
 var app = builder.Build();

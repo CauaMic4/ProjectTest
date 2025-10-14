@@ -86,6 +86,23 @@ namespace ProjectTest.Controllers
         }
         #endregion
 
+        #region PATCH
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Patch(long id)
+        {
+            var person = _personBusiness.Disable(id);
+
+            return Ok(person);
+        }
+
+        #endregion
+
         #region DELETE
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]

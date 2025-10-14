@@ -20,7 +20,7 @@ namespace ProjectTest.Repository
         {
             var pass = ComputeHash(user.Password, SHA256.Create());
 
-            var result = _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == pass));
+            var result = _context.Users.FirstOrDefault(u => (u.UserName == user.UserName));
 
             return result;
 
