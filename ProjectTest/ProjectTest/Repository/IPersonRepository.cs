@@ -7,5 +7,7 @@ namespace ProjectTest.Repository
     {
         Person Disable(long id);
 
+        List<Person> FindByName(string firstName, string lastName);
+
     }
 }

@@ -11,7 +11,7 @@ namespace ProjectTest.Repository
         }
         public Person Disable(long id)
         {
-            if(!_context.Persons.Any(p=> p.Id.Equals(id)))
+            if (!_context.Persons.Any(p => p.Id.Equals(id)))
                 return null;
 
             var user = _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
@@ -32,6 +32,26 @@ namespace ProjectTest.Repository
             }
 
             return user;
+        }
+
+        public List<Person> FindByName(string firstName, string lastName)
+        {
+            if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(firstName))
+            {
+                return _context.Persons.Where(p => p.FirstName.Contains(firstName) && p.LastName.Contains(lastName)).ToList();
+            }
+            else if (!string.IsNullOrWhiteSpace(firstName))
+            {
+                return _context.Persons.Where(p => p.FirstName.Contains(firstName)).ToList();
+            }
+            else if (!string.IsNullOrWhiteSpace(lastName))
+            {
+                return _context.Persons.Where(p => p.LastName.Contains(lastName)).ToList();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
