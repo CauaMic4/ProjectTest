@@ -25,6 +25,11 @@ namespace ProjectTest.Business.Implementations
             return _converter.Parse(_repository.FindById(id));
         }
 
+        public List<PersonVO> FindByName(string firstName, string lastName)
+        {
+            return _converter.Parse(_repository.FindByName(firstName, lastName));
+        }
+
         public PersonVO Create(PersonVO person)
         {
             try
@@ -62,6 +67,6 @@ namespace ProjectTest.Business.Implementations
             user.Ativo = false;
 
            Update(user);
-        }
+        }        
     }
 }
