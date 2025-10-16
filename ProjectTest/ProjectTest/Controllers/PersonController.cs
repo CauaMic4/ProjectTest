@@ -58,7 +58,7 @@ namespace ProjectTest.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        [TypeFilter(typeof(HyperMediaFilter))]
+       // [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get([FromQuery] string? firstName, string? lastName)
         {
             var person = _personBusiness.FindByName(firstName, lastName);
