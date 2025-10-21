@@ -27,7 +27,7 @@ namespace ProjectTest.Controllers
         #region GET
 
         [HttpGet]
-        [TypeFilter(typeof(HyperMediaFilter))]
+       // [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_bookBusiness.FindAll());
