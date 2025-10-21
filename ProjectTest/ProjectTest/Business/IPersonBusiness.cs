@@ -1,4 +1,5 @@
 ﻿using ProjectTest.Data.VO;
+using ProjectTest.Hypermedia.Utils;
 
 namespace ProjectTest.Business
 {
@@ -8,6 +9,7 @@ namespace ProjectTest.Business
         PersonVO FindById(long id);
         List<PersonVO> FindByName(string firstName, string lastName);
         List<PersonVO> FindAll();
+        PagesSearchVO<PersonVO> FindWithPagesSearch(string name, string sortDirection, int pageSize, int page);
         PersonVO Update(PersonVO person);
         PersonVO Disable(long id);
         void Delete(long id);

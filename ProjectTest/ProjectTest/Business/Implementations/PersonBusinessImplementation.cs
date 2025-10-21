@@ -1,5 +1,6 @@
 ﻿using ProjectTest.Data.Converter.Implementations;
 using ProjectTest.Data.VO;
+using ProjectTest.Hypermedia.Utils;
 using ProjectTest.Model;
 using ProjectTest.Repository;
 
@@ -20,6 +21,30 @@ namespace ProjectTest.Business.Implementations
         {
             return _converter.Parse(_repository.FindAll());
         }
+
+        public PagesSearchVO<PersonVO> FindWithPagesSearch(string name, string sortDirection, int pageSize, int page)
+        {
+            var offset = page > 0 ? (page - 1) * pageSize : 0;
+            var sort = (!string.IsNullOrWhiteSpace(sortDirection)) && !sortDirection.Equals("desc", StringComparison.InvariantCultureIgnoreCase) ? "asc" : "desc";
+            var size = (pageSize < 1) ? 1 : pageSize;
+
+            string query = @"select * from Persons p where 1 = 1 ";
+            string countQuery = @"select count(*) from Persons p where 1 = 1 ";
+
+            var persons = _repository.FindWithPagedSearch(query);
+
+            int totalResults = _repository.GetCount(countQuery);
+
+            return new PagesSearchVO<PersonVO>
+            {
+                CurrentPage = page,
+                PageSize = size,
+                SortDirections = sort,
+                TotalResults = totalResults,
+                List = _converter.Parse(persons)
+            };
+        }
+
         public PersonVO FindById(long id)
         {
             return _converter.Parse(_repository.FindById(id));
@@ -50,7 +75,7 @@ namespace ProjectTest.Business.Implementations
             var personEntity = _converter.Parse(person);
             personEntity = _repository.Update(personEntity);
 
-            return _converter.Parse(personEntity); 
+            return _converter.Parse(personEntity);
         }
 
         public PersonVO Disable(long id)
@@ -66,7 +91,7 @@ namespace ProjectTest.Business.Implementations
 
             user.Ativo = false;
 
-           Update(user);
-        }        
+            Update(user);
+        }
     }
 }

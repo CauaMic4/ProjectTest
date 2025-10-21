@@ -9,6 +9,9 @@ namespace ProjectTest.Repository
         T FindById(long id);
         List<T> FindAll();
         T Update(T item);
-        void Delete(long id);   
+        void Delete(long id); 
+        List<T> FindWithPagedSearch(string query);
+        int GetCount(string query);
+
     }
 }

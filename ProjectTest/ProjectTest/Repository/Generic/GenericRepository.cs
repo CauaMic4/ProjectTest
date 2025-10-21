@@ -15,10 +15,10 @@ namespace ProjectTest.Repository.Generic
             _context = context;
             dataset = _context.Set<T>();
         }
-        
+
         public List<T> FindAll()
         {
-            return dataset.Where(x=>x.Ativo == true).ToList();
+            return dataset.Where(x => x.Ativo == true).ToList();
         }
 
         public T FindById(long id)
@@ -72,7 +72,7 @@ namespace ProjectTest.Repository.Generic
             if (result != null)
             {
                 try
-                {   
+                {
                     result.Ativo = false;
 
                     //dataset.Remove(result);
@@ -88,6 +88,28 @@ namespace ProjectTest.Repository.Generic
         private bool Exists(long id)
         {
             return dataset.Any(p => p.Id.Equals(id));
+        }
+
+        public List<T> FindWithPagedSearch(string query)
+        {
+            return dataset.FromSqlRaw<T>(query).ToList();
+        }
+
+        public int GetCount(string query)
+        {
+            var result = "default";
+
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = query;
+                    result = command.ExecuteScalar().ToString();
+                }
+
+                return int.Parse(result);
+            }
         }
     }
 }
