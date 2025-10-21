@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using ProjectTest.Hypermedia.Abstract;
+using ProjectTest.Hypermedia.Utils;
 using System.Collections.Concurrent;
 
 namespace ProjectTest.Hypermedia
@@ -15,7 +16,7 @@ namespace ProjectTest.Hypermedia
 
         public bool CanEnrich(Type contentType)
         {
-            return contentType == typeof(T) || contentType == typeof(List<T>);
+            return contentType == typeof(T) || contentType == typeof(PagesSearchVO<T>);
         }
 
         protected abstract Task EnrichModel(T content, IUrlHelper urlHelper);
@@ -47,11 +48,17 @@ namespace ProjectTest.Hypermedia
                         EnrichModel(element, urlHelper);
                     });
                 }
+                else if (okObjectResult.Value is PagesSearchVO<T> pagesSearch)
+                {
+
+                    Parallel.ForEach(pagesSearch.List.ToList(), (element) =>
+                    {
+                        EnrichModel(element, urlHelper);
+                    });
+                }
             }
 
-
             await Task.FromResult<object>(null);
-
         }
     }
 }
