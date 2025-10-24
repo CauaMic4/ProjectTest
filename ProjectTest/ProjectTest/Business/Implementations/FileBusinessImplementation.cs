@@ -2,12 +2,12 @@
 
 namespace ProjectTest.Business.Implementations
 {
-    public class FileBusiness : IFileBusiness
+    public class FileBusinessImplementation : IFileBusiness
     {
         private readonly string _basePath;
         private readonly IHttpContextAccessor _context;
 
-        public FileBusiness(IHttpContextAccessor context)
+        public FileBusinessImplementation(IHttpContextAccessor context)
         {
             _context = context;
             _basePath = Directory.GetCurrentDirectory() + "\\UploadsDir\\";
@@ -38,11 +38,8 @@ namespace ProjectTest.Business.Implementations
                     using (var stream = new FileStream(destination, FileMode.Create))
                   
                     await file.CopyToAsync(stream);
-                    
                 }
             }
-
-
                 return fileDetail;
         }
 

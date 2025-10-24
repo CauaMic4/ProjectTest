@@ -81,5 +81,15 @@ namespace ProjectTest.Repository.Implementations
         {
             return _context.Persons.Any(p => p.Id.Equals(id));
         }
+
+        public List<Person> FindWithPagedSearch(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetCount(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

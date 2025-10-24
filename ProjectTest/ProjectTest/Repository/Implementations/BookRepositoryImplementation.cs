@@ -81,5 +81,15 @@ namespace ProjectTest.Repository.Implementations
         {
             return _context.Book.Any(p => p.Id.Equals(id));
         }
+
+        public List<Book> FindWithPagedSearch(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetCount(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
