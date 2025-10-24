@@ -18,12 +18,35 @@ namespace ProjectTest.Business.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> file)
+        public async Task<FileDetailVO> SaveFileToDisk(IFormFile file)
         {
-            throw new NotImplementedException();
+            FileDetailVO fileDetail = new();
+
+            var fileType = Path.GetExtension(file.FileName);
+            var baseUrl = _context.HttpContext.Request.Host;
+
+            if(fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".png" || fileType.ToLower() == ".jpeg")
+            {
+                var docName = Path.GetFileName(file.FileName);
+                if(file != null && file.Length > 0)
+                {
+                    var destination = Path.Combine(_basePath, "" ,docName);
+                    fileDetail.DocumentName = docName;
+                    fileDetail.DocType = fileType;
+                    fileDetail.DocURL = Path.Combine(baseUrl + "api/file/v1/", docName);
+
+                    using (var stream = new FileStream(destination, FileMode.Create))
+                  
+                    await file.CopyToAsync(stream);
+                    
+                }
+            }
+
+
+                return fileDetail;
         }
 
-        public Task<FileDetailVO> SaveFileToDisk(IFormFile file)
+        public Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> file)
         {
             throw new NotImplementedException();
         }
