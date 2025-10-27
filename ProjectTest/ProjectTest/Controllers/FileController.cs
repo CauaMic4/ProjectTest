@@ -20,6 +20,7 @@ namespace ProjectTest.Controllers
         }
 
         [HttpPost("uploadFile")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [ProducesResponseType((200), Type = typeof(FileDetailVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
