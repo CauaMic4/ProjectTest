@@ -34,5 +34,21 @@ namespace ProjectTest.Controllers
 
             return new OkObjectResult(detail);
         }
+
+        [HttpPost("uploadMultipleFile")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [ProducesResponseType((200), Type = typeof(List<FileDetailVO>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> UploadManyFile([FromForm] List<IFormFile> files)
+        {
+
+            if (files == null || files.Count == 0)
+                return BadRequest("No file uploaded.");
+
+            List<FileDetailVO> details = await _fileBusiness.SaveFilesToDisk(files);
+
+            return new OkObjectResult(details);
+        }
     }
 }

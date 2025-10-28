@@ -25,27 +25,33 @@ namespace ProjectTest.Business.Implementations
             var fileType = Path.GetExtension(file.FileName);
             var baseUrl = _context.HttpContext.Request.Host;
 
-            if(fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".png" || fileType.ToLower() == ".jpeg")
+            if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".png" || fileType.ToLower() == ".jpeg" || fileType.ToLower() == ".txt")
             {
                 var docName = Path.GetFileName(file.FileName);
-                if(file != null && file.Length > 0)
+                if (file != null && file.Length > 0)
                 {
-                    var destination = Path.Combine(_basePath, "" ,docName);
+                    var destination = Path.Combine(_basePath, "", docName);
                     fileDetail.DocumentName = docName;
                     fileDetail.DocType = fileType;
                     fileDetail.DocURL = Path.Combine(baseUrl + "api/file/v1/", docName);
 
                     using (var stream = new FileStream(destination, FileMode.Create))
-                  
-                    await file.CopyToAsync(stream);
+
+                        await file.CopyToAsync(stream);
                 }
             }
-                return fileDetail;
+            return fileDetail;
         }
 
-        public Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> file)
+        public async Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> files)
         {
-            throw new NotImplementedException();
+            List<FileDetailVO> list = new();
+
+            foreach (var item in files)
+                list.Add(await SaveFileToDisk(item));
+
+
+            return list;
         }
     }
 }
