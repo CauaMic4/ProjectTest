@@ -19,6 +19,32 @@ namespace ProjectTest.Controllers
             _fileBusiness = fileBusiness;
         }
 
+        [HttpGet("downloadFile/{fileName}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [ProducesResponseType((200), Type = typeof(byte[]))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetFileAsync(string fileName)
+        {
+
+            if (fileName == null)
+                return BadRequest("No file for download.");
+
+            byte[] buffer =  _fileBusiness.GetFile(fileName);
+
+            if (buffer != null)
+            {
+                HttpContext.Response.ContentType = $"application/{Path.GetExtension(fileName).Replace(".", "")}";
+
+                HttpContext.Response.Headers.Add("content-length", buffer.Length.ToString());
+
+                await HttpContext.Response.Body.WriteAsync(buffer, 0, buffer.Length);
+            }
+
+            return new ContentResult();
+        }
+
         [HttpPost("uploadFile")]
         [ApiExplorerSettings(IgnoreApi = true)]
         [ProducesResponseType((200), Type = typeof(FileDetailVO))]
